@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import Web3 from 'web3';
 import InventoryContract from './contracts/Inventory.json';
 import EventListener from './components/EventListener';
+import './App.css';
+
 function App() {
   const [account, setAccount] = useState('');
   const [contract, setContract] = useState(null);
   const [items, setItems] = useState([]);
-  const [form, setForm] = useState({ name: '', stock: 0, price: 0, threshold: 0 });
+  const [form, setForm] = useState({ name: '', stock: '', price: '', threshold: '' });
   const [paused, setPaused] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const [isStaff, setIsStaff] = useState(false);
@@ -15,13 +17,13 @@ function App() {
     try {
       const data = await contractInstance.methods.getAllItems().call();
       const items = [];
-  
+
       const ids = data.ids;
       const names = data.names;
       const stocks = data.stocks;
       const prices = data.prices;
       const thresholds = data.thresholds;
-  
+
       for (let i = 0; i < ids.length; i++) {
         items.push({
           id: Number(ids[i]),
@@ -31,7 +33,7 @@ function App() {
           threshold: Number(thresholds[i])
         });
       }
-  
+
       setItems(items);
     } catch (err) {
       console.error("loadItems error:", err);
@@ -46,14 +48,14 @@ function App() {
           await window.ethereum.request({ method: "eth_requestAccounts" });
           const accounts = await web3.eth.getAccounts();
           setAccount(accounts[0]);
-  
+
           const networkId = await web3.eth.net.getId();
           const deployedNetwork = InventoryContract.networks[networkId];
           if (!deployedNetwork) {
             alert("Smart contract not deployed to the detected network.");
             return;
           }
-  
+
           const instance = new web3.eth.Contract(
             InventoryContract.abi,
             deployedNetwork.address
@@ -82,7 +84,7 @@ function App() {
         alert("Please install MetaMask!");
       }
     };
-  
+
     init();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -107,7 +109,7 @@ function App() {
   const purchaseItem = async (id) => {
     const qty = window.prompt('Quantity to purchase?');
     if (!qty) return;
-    
+
     try {
       const price = items.find(it => it.id === id).price;
       await contract.methods
@@ -123,7 +125,7 @@ function App() {
   const restockItem = async (id) => {
     const amount = window.prompt("Enter amount to restock:");
     if (!amount) return;
-    
+
     try {
       await contract.methods.restock(id, amount)
         .send({ from: account });
@@ -164,7 +166,7 @@ function App() {
 
   const removeItem = async (id) => {
     if (!window.confirm("Are you sure you want to remove this item?")) return;
-    
+
     try {
       await contract.methods.removeItem(id)
         .send({ from: account });
@@ -183,7 +185,7 @@ function App() {
     try {
       await contract.methods.updateStaff(staffAddress, makeStaff)
         .send({ from: account });
-      alert(`Staff status updated successfully`);
+      alert("Staff Status updated successfully");
     } catch (err) {
       console.error("Error updating staff status:", err);
       alert("Failed to update staff status. Make sure you are the owner.");
@@ -215,7 +217,7 @@ function App() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Inventory DApp</h1>
-      
+
       {/* Admin Controls */}
       {isOwner && (
         <div className="mb-4 space-x-2">
@@ -267,11 +269,11 @@ function App() {
               <td>{item.price}</td>
               <td>{item.threshold}</td>
               <td className="space-x-2">
-              {(!isStaff )&&
-                (<button onClick={() => purchaseItem(item.id)} className="bg-green-500 text-white px-2 py-1 rounded">
-                  Buy
-                </button>
-              )} 
+                {(!isStaff && !isOwner) &&
+                  (<button onClick={() => purchaseItem(item.id)} className="bg-green-500 text-white px-2 py-1 rounded">
+                    Buy
+                  </button>
+                  )}
                 {(isOwner || isStaff) && (
                   <button onClick={() => restockItem(item.id)} className="bg-blue-500 text-white px-2 py-1 rounded">
                     Restock
@@ -295,7 +297,7 @@ function App() {
           ))}
         </tbody>
       </table>
-    <EventListener contract={contract} />  
+      <EventListener contract={contract} />
     </div>
   );
 }

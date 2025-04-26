@@ -1,10 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-/**
- * @title Simple on-chain Inventory with extended features
- * @dev Place this file in `contracts/Inventory.sol`
- */
+
 contract Inventory {
     address public owner;
     bool public paused;
@@ -186,4 +183,25 @@ contract Inventory {
 
         return (ids, names, stocks, prices, thresholds);
     }
+
+        /**
+     * @notice Allows the admin to verify a customer's transaction
+     * @param itemId ID of the item purchased
+     * @param index Index in the purchase history
+     * @return buyer Address of the buyer
+     * @return quantity Number of items bought
+     * @return timestamp Timestamp of purchase
+     */
+    function verifyTransaction(uint256 itemId, uint256 index)
+        external
+        view
+        onlyOwner
+        returns (address buyer, uint256 quantity, uint256 timestamp)
+    {
+        require(items[itemId].exists, "Item does not exist");
+        require(index < purchaseHistory[itemId].length, "Invalid index");
+        Purchase storage p = purchaseHistory[itemId][index];
+        return (p.buyer, p.quantity, p.timestamp);
+    }
+
 }

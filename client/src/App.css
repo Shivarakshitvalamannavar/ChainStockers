@@ -1,38 +1,144 @@
-.App {
+/* 🌐 Base Styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+  margin: 0;
+  padding: 0;
+  color: #2c3e50;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.container:hover {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+}
+
+h1, h2 {
+  color: #34495e;
+  font-weight: 600;
+}
+
+h1 {
   text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* 📋 Table Styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #fff;
+  overflow: hidden;
+  border-radius: 8px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+table th, table td {
+  border: 1px solid #e0e0e0;
+  padding: 12px;
+  text-align: center;
+  transition: background-color 0.2s ease;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+table th {
+  background-color: #ecf0f1;
+  font-weight: 600;
+  color: #2d3436;
+}
+
+table tr:nth-child(even) {
+  background-color: #fdfdfd;
+}
+
+table tr:hover {
+  background-color: #f0f8ff;
+}
+
+/* 🧩 Buttons */
+button {
+  cursor: pointer;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  margin: 4px;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.bg-red-500 {
+  background-color: #e74c3c;
+}
+
+.bg-green-500 {
+  background-color: #2ecc71;
+}
+
+.bg-blue-500 {
+  background-color: #3498db;
+}
+
+.bg-yellow-500 {
+  background-color: #f1c40f;
+}
+
+.bg-purple-500 {
+  background-color: #9b59b6;
+}
+
+.text-white {
+  color: #ffffff;
+}
+
+.rounded {
+  border-radius: 6px;
+}
+
+/* 🧾 Form Elements */
+form input {
+  display: block;
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #dcdde1;
+  border-radius: 6px;
+  font-size: 15px;
+  transition: border 0.2s ease;
+}
+
+form input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 6px rgba(52, 152, 219, 0.4);
+}
+
+form button {
+  width: 100%;
+  background-color: #2980b9;
   color: white;
+  font-weight: bold;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 16px;
+  margin-top: 10px;
+  transition: background-color 0.2s ease;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+form button:hover {
+  background-color: #1f618d;
 }
